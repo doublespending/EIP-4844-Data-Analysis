@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.staticfile.net/Chart.js/3.9.1/chart.js"></script>
+  </head>
+  <body>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script type="module">
+      import { strategyData } from "./data/Strategies.js";
+      import {
+        getDataMappingByRollup,
+        getRollupDistribution,
+        getRollupRGB,
+      } from "./utils.js";
+      const rollupMap = getDataMappingByRollup(strategyData);
+      const threadholds = [
+        [1, 1e1],
+        [1e1, 1e3],
+        [1e3, 1e5],
+        [1e5, 1e7],
+        [1e7, 1e9],
+        [1e9, Number.MAX_SAFE_INTEGER],
+      ];
+      const [rollups, percentsList] = getRollupDistribution(
+        rollupMap,
+        threadholds,
+        ({ blobGasPrice }) => blobGasPrice,
+        ({ blobCount }) => blobCount
+      );
+      console.log(percentsList);
+      const datasets = rollups.map((rollup, i) => {
+        return {
+          label: rollup,
+          data: percentsList.map((e) => e[i]),
+          backgroundColor: getRollupRGB(rollup),
+        };
+      });
+      const data = {
+        labels: [
+          "1 ~ 1e1",
+          "1e1 ~ 1e3",
+          "1e3 ~ 1e5",
+          "1e5 ~ 1e7",
+          "1e7 ~ 1e9",
+          "1e9 ~ ",
+        ],
+        datasets: datasets,
+      };
+      const config = {
+        type: "bar",
+        data: data,
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: "Blob Distribution with Different Blob Gas Price",
+            },
+          },
+          responsive: true,
+          scales: {
+            x: {
+              stacked: true,
+              title: {
+                display: true,
+                text: "Blob Gas Price",
+              },
+            },
+            y: {
+              stacked: true,
+              max: 100,
+            },
+          },
+        },
+      };
+      const ctx = document.getElementById("myChart");
+
+      const myChart = new Chart(ctx, config);
+    </script>
+  </body>
+</html>

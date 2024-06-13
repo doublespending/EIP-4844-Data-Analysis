@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.staticfile.net/Chart.js/3.9.1/chart.js"></script>
+  </head>
+  <body>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script type="module">
+      import { strategyData } from "./data/Strategies.js";
+      const blobPerBlockMap = new Map();
+      for (const e of strategyData) {
+        if (!blobPerBlockMap.has(e.blockNumber)) {
+          blobPerBlockMap.set(e.blockNumber, 0);
+        }
+        blobPerBlockMap.set(
+          e.blockNumber,
+          blobPerBlockMap.get(e.blockNumber) + e.blobCount
+        );
+      }
+
+      const blobs = [1, 2, 3, 4, 5, 6];
+      const counts = [0, 0, 0, 0, 0, 0];
+
+      for (const blobCount of blobPerBlockMap) {
+        counts[blobCount[1] - 1] += 1;
+      }
+      console.log(counts);
+      const sum = counts.reduce((partialSum, a) => partialSum + a, 0);
+      const percents = counts.map((e) => (e / sum) * 100);
+
+      console.log(percents);
+      const datasets = [
+        {
+          label: "Dataset",
+          data: percents,
+          backgroundColor: [
+            "rgb(255, 99, 132)",
+            "rgb(255, 159, 64)",
+            "rgb(255, 205, 86)",
+            "rgb(75, 192, 192)",
+            "rgb(54, 162, 235)",
+            "rgb(153, 102, 255)",
+          ],
+        },
+      ];
+
+      const data = {
+        labels: blobs,
+        datasets: datasets,
+      };
+      const config = {
+        type: "doughnut",
+        data: data,
+        options: {
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: true,
+              text: "Blob Number Per Block",
+            },
+          },
+          responsive: true,
+        },
+      };
+      const ctx = document.getElementById("myChart");
+
+      const myChart = new Chart(ctx, config);
+    </script>
+  </body>
+</html>

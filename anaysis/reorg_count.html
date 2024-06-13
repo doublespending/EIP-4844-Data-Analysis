@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.staticfile.net/Chart.js/3.9.1/chart.js"></script>
+  </head>
+  <body>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script type="module">
+      import { strategyData } from "./data/Strategies.js";
+      import { strategyDataReorg } from "./data/StrategiesReorg.js";
+      console.log(strategyData.length);
+      console.log(strategyDataReorg.length);
+      const sum = strategyData.length + strategyDataReorg.length;
+      const datasets = [
+        {
+          label: "Dataset",
+          data: [strategyData.length / sum, strategyDataReorg.length / sum],
+          backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)"],
+        },
+      ];
+
+      const data = {
+        labels: ["normal", "reorg"],
+        datasets: datasets,
+      };
+      const config = {
+        type: "doughnut",
+        data: data,
+        options: {
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: true,
+              text: "Normal/Reorg Blob Tx",
+            },
+          },
+          responsive: true,
+        },
+      };
+      const ctx = document.getElementById("myChart");
+
+      const myChart = new Chart(ctx, config);
+    </script>
+  </body>
+</html>

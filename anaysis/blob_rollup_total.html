@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.staticfile.net/Chart.js/3.9.1/chart.js"></script>
+  </head>
+  <body>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script type="module">
+      import { strategyData } from "./data/Strategies.js";
+      import {
+        getDataMappingByRollup,
+        getRollupDistribution,
+        getRollupRGB,
+      } from "./utils.js";
+      const rollupMap = getDataMappingByRollup(strategyData);
+      const threadholds = [[1, Number.MAX_SAFE_INTEGER]];
+      const [rollups, percentsList] = getRollupDistribution(
+        rollupMap,
+        threadholds,
+        ({ blobGasPrice }) => blobGasPrice,
+        ({ blobCount }) => blobCount
+      );
+      /*
+[
+    [
+        14.428559960140833,
+        5.578372069019564,
+        17.589514286478845,
+        1.7646091877420316,
+        4.295819247339643,
+        13.832583850156036,
+        28.684201472291637,
+        1.474585320663691,
+        4.997304918809883,
+        4.844647364873216,
+        0.572274686752561,
+        0.08677779151157737,
+        0.20987227991125984,
+        1.527085247393162,
+        0.08270012729957962,
+        0.031092189616482937
+    ]
+]
+      */
+      console.log(percentsList);
+      const datasets = [
+        {
+          label: "Dataset",
+          data: percentsList[0],
+          backgroundColor: rollups.map((rollup) => getRollupRGB(rollup)),
+        },
+      ];
+
+      const data = {
+        labels: rollups,
+        datasets: datasets,
+      };
+      const config = {
+        type: "doughnut",
+        data: data,
+        options: {
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: true,
+              text: "Blob Distribution",
+            },
+          },
+          responsive: true,
+        },
+      };
+      const ctx = document.getElementById("myChart");
+
+      const myChart = new Chart(ctx, config);
+    </script>
+  </body>
+</html>

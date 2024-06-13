@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.staticfile.net/Chart.js/3.9.1/chart.js"></script>
+  </head>
+  <body>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script type="module">
+      // https://www.runoob.com/chartjs/chartjs-scatter2.html
+      // strategyDataReorg
+      import { strategyData } from "./data/Strategies.js";
+      import { getDataMappingByRollup, getListByMap } from "./utils.js";
+      const rollupMap = getDataMappingByRollup(strategyData);
+      const getXY = ({
+        blockNumber,
+        blobCount,
+        rollup,
+        blobGasPrice,
+        blobInterval,
+        gasRatio,
+        feeRatio,
+      }) => ({
+        x: blobGasPrice,
+        y: blobCount,
+      });
+      const dataList = getListByMap(rollupMap, getXY);
+      const ctx = document.getElementById("myChart");
+      const data = {
+        datasets: dataList,
+      };
+      const config = {
+        type: "scatter",
+        data: data,
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: "Blob Count per Transaction with Different Blob Gas Price",
+            },
+          },
+          responsive: true, // 设置图表为响应式，根据屏幕窗口变化而变化
+          maintainAspectRatio: false, // 保持图表原有比例
+          scales: {
+            x: {
+              type: "logarithmic",
+              position: "bottom",
+              title: {
+                display: true,
+                text: "Blob Gas Price (Logarithmic)",
+              },
+            },
+            y: {
+              type: "linear",
+              title: {
+                display: true,
+                text: "Blob Count",
+              },
+            },
+          },
+        },
+      };
+      const myChart = new Chart(ctx, config);
+    </script>
+  </body>
+</html>

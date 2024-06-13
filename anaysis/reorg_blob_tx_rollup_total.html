@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.staticfile.net/Chart.js/3.9.1/chart.js"></script>
+  </head>
+  <body>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script type="module">
+      import { strategyDataReorg } from "./data/StrategiesReorg.js";
+      import {
+        getDataMappingByRollup,
+        getRollupDistribution,
+        getRollupRGB,
+      } from "./utils.js";
+      const rollupMap = getDataMappingByRollup(strategyDataReorg);
+      const threadholds = [[1, Number.MAX_SAFE_INTEGER]];
+      const [rollups, percentsList] = getRollupDistribution(
+        rollupMap,
+        threadholds,
+        ({ blobGasPrice }) => blobGasPrice,
+        ({ blobCount }) => 1
+      );
+      /*
+      [
+        [
+          14.619883040935672, 9.941520467836257, 19.298245614035086,
+          30.409356725146196, 7.017543859649122, 2.923976608187134,
+          4.678362573099415, 1.7543859649122806, 1.1695906432748537,
+          5.263157894736842, 0.5847953216374269, 1.1695906432748537,
+          0.5847953216374269, 0.5847953216374269,
+        ],
+      ];
+      */
+      console.log(percentsList);
+      const datasets = [
+        {
+          label: "Dataset",
+          data: percentsList[0],
+          backgroundColor: rollups.map((rollup) => getRollupRGB(rollup)),
+        },
+      ];
+
+      const data = {
+        labels: rollups,
+        datasets: datasets,
+      };
+      const config = {
+        type: "doughnut",
+        data: data,
+        options: {
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: true,
+              text: "Reorg Blob Tx Distribution",
+            },
+          },
+          responsive: true,
+        },
+      };
+      const ctx = document.getElementById("myChart");
+
+      const myChart = new Chart(ctx, config);
+    </script>
+  </body>
+</html>

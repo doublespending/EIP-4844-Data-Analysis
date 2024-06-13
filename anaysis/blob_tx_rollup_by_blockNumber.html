@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.staticfile.net/Chart.js/3.9.1/chart.js"></script>
+  </head>
+  <body>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script type="module">
+      import { strategyData } from "./data/Strategies.js";
+      import {
+        getDataMappingByRollup,
+        getRollupDistribution,
+        getRollupRGB,
+      } from "./utils.js";
+      const rollupMap = getDataMappingByRollup(strategyData);
+      const minBlock = 19922944;
+      const maxBlock = 19426589;
+      const baseHolds = Math.floor((19922944 - 19426589) / 100);
+      const threadholds = [];
+      const interval = 100;
+      let a = minBlock;
+      let b = a + interval;
+      while (true) {
+        threadholds.push([a, b]);
+        if (b == maxBlock) {
+          break;
+        }
+        a = a + interval;
+        b = b + interval > maxBlock ? maxBlock : b + interval;
+      }
+      console.log(threadholds);
+      const [rollups, percentsList] = getRollupDistribution(
+        rollupMap,
+        threadholds,
+        ({ blcockNumber }) => blcockNumber,
+        ({ blobCount }) => 1
+      );
+      console.log(percentsList);
+      const datasets = rollups.map((rollup, i) => {
+        return {
+          label: rollup,
+          data: percentsList.map((e) => e[i]),
+          backgroundColor: getRollupRGB(rollup),
+        };
+      });
+      const data = {
+        labels: threadholds.map(
+          (threadhold) => `${threadhold[0]}~${threadhold[1]}`
+        ),
+        datasets: datasets,
+      };
+      const config = {
+        type: "bar",
+        data: data,
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: "Blob Tx Distribution with block number",
+            },
+          },
+          responsive: true,
+          scales: {
+            x: {
+              stacked: true,
+              title: {
+                display: true,
+                text: "Block Number",
+              },
+            },
+            y: {
+              stacked: true,
+              max: 100,
+            },
+          },
+        },
+      };
+      const ctx = document.getElementById("myChart");
+
+      const myChart = new Chart(ctx, config);
+    </script>
+  </body>
+</html>

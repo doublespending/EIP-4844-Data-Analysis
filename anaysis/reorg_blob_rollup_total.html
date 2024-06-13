@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.staticfile.net/Chart.js/3.9.1/chart.js"></script>
+  </head>
+  <body>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script type="module">
+      import { strategyDataReorg } from "./data/StrategiesReorg.js";
+      import {
+        getDataMappingByRollup,
+        getRollupDistribution,
+        getRollupRGB,
+      } from "./utils.js";
+      const rollupMap = getDataMappingByRollup(strategyDataReorg);
+      const threadholds = [[1, Number.MAX_SAFE_INTEGER]];
+      const [rollups, percentsList] = getRollupDistribution(
+        rollupMap,
+        threadholds,
+        ({ blobGasPrice }) => blobGasPrice,
+        ({ blobCount }) => blobCount
+      );
+      /*
+      [
+        [
+          13.128491620111731, 28.49162011173184, 9.217877094972067,
+          14.52513966480447, 3.35195530726257, 8.379888268156424,
+          2.2346368715083798, 0.8379888268156425, 1.9553072625698324,
+          15.083798882681565, 0.27932960893854747, 0.5586592178770949,
+          0.27932960893854747, 1.675977653631285,
+        ],
+      ];
+      */
+      console.log(percentsList);
+      const datasets = [
+        {
+          label: "Dataset",
+          data: percentsList[0],
+          backgroundColor: rollups.map((rollup) => getRollupRGB(rollup)),
+        },
+      ];
+
+      const data = {
+        labels: rollups,
+        datasets: datasets,
+      };
+      const config = {
+        type: "doughnut",
+        data: data,
+        options: {
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: true,
+              text: "Reorg Blob Distribution",
+            },
+          },
+          responsive: true,
+        },
+      };
+      const ctx = document.getElementById("myChart");
+
+      const myChart = new Chart(ctx, config);
+    </script>
+  </body>
+</html>

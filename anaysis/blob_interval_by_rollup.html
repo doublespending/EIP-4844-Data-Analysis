@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.staticfile.net/Chart.js/3.9.1/chart.js"></script>
+  </head>
+  <body>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script type="module">
+      // [1 min, 1 h, 1 d, 1 w, 1 m]
+      const threadholds = [
+        0,
+        5,
+        5 * 60,
+        5 * 60 * 24,
+        5 * 60 * 24 * 7,
+        5 * 60 * 24 * 30,
+      ];
+      const rollups = [
+        "optimism",
+        "linea",
+        "arbitrum",
+        "zora",
+        "starknet",
+        "Others",
+        "base",
+        "paradex",
+        "scroll",
+        "zksync",
+        "kroma",
+        "metal",
+        "boba",
+        "mode",
+        "camp",
+        "pgn",
+      ];
+      const percentsList = [
+        [0.6712828373592684, 99.32871716264073, 0, 0, 0],
+        [
+          45.9916382993306, 53.85757693450001, 0.1485001485001485,
+          0.0022846176692330536, 0,
+        ],
+        [1.199739187133232, 98.80026081286677, 0, 0, 0],
+        [4.621676891615542, 68.09815950920245, 27.280163599182007, 0, 0],
+        [84.84174305122957, 13.930171160748717, 1.228085788021714, 0, 0],
+        [
+          82.69654768217465, 17.003897928237187, 0.2958332170466914,
+          0.0037211725414678164, 0,
+        ],
+        [4.109370428491635, 95.89062957150837, 0, 0, 0],
+        [79.97580157289777, 17.803128510932503, 2.2210699161697347, 0, 0],
+        [43.347103223174216, 56.65289677682579, 0, 0, 0],
+        [3.494852177198451, 96.50042504958913, 0.0047227732124303385, 0, 0],
+        [0, 100, 0, 0, 0],
+        [1.6176470588235297, 29.117647058823533, 69.26470588235294, 0, 0],
+        [0, 99.81773997569866, 0.18226002430133656, 0, 0],
+        [6.956115779645192, 63.58543417366946, 29.458450046685343, 0, 0],
+        [2.459016393442623, 5.737704918032787, 91.80327868852459, 0, 0],
+        [0, 1.1363636363636365, 97.72727272727273, 1.1363636363636365, 0],
+      ];
+
+      const data = {
+        labels: rollups,
+        datasets: [
+          {
+            label: "interval < 1 min",
+            data: percentsList.map((e) => e[0]),
+            backgroundColor: "rgb(255, 99, 132)",
+          },
+          {
+            label: "1 min <= interval < 1 hour",
+            data: percentsList.map((e) => e[1]),
+            backgroundColor: "rgb(75, 192, 192)",
+          },
+          {
+            label: "1hour <= interval < 1 day",
+            data: percentsList.map((e) => e[2]),
+            backgroundColor: "rgb(255, 205, 86)",
+          },
+          {
+            label: "1 day <= interval < 1 week",
+            data: percentsList.map((e) => e[3]),
+            backgroundColor: "rgb(201, 203, 207)",
+          },
+        ],
+      };
+      const config = {
+        type: "bar",
+        data: data,
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: "Blob Interval of Applications",
+            },
+          },
+          responsive: true,
+          scales: {
+            x: {
+              stacked: true,
+            },
+            y: {
+              stacked: true,
+              max: 100,
+            },
+          },
+        },
+      };
+      const ctx = document.getElementById("myChart");
+
+      const myChart = new Chart(ctx, config);
+    </script>
+  </body>
+</html>
