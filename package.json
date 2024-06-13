@@ -1,0 +1,22 @@
+{
+  "name": "4844dataanaysis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db": "docker run --platform linux/x86_64 --name blob -p 3306:3306 -d -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=jason -e MYSQL_PASSWORD=jason -e MYSQL_DATABASE=blob_data mysql:5.7 --autocommit=1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "chart.js": "^4.4.3",
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.9.7",
+    "sequelize": "^6.37.3"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.6.2"
+  }
+}

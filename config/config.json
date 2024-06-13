@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "jason",
+    "password": "jason",
+    "database": "blob_data",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "logging": false
+  },
+  "test": {
+    "username": "jason",
+    "password": "jason",
+    "database": "blob_data",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "logging": false
+  },
+  "production": {
+    "username": "jason",
+    "password": "jason",
+    "database": "blob_data",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "logging": false
+  }
+}
