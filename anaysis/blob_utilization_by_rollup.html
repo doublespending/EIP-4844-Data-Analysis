@@ -22,32 +22,32 @@
         labels: rollups,
         datasets: [
           {
-            label: "utility < 20%",
+            label: "utilization < 20%",
             data: percentsList.map((e) => e[0]),
             backgroundColor: "rgb(255, 99, 132)",
           },
           {
-            label: "20% <= utility < 40%",
+            label: "20% <= utilization < 40%",
             data: percentsList.map((e) => e[1]),
             backgroundColor: "rgb(75, 192, 192)",
           },
           {
-            label: "40% <= utility < 60%",
+            label: "40% <= utilization < 60%",
             data: percentsList.map((e) => e[2]),
             backgroundColor: "rgb(255, 205, 86)",
           },
           {
-            label: "60% <= utility < 80%",
+            label: "60% <= utilization < 80%",
             data: percentsList.map((e) => e[3]),
             backgroundColor: "rgb(201, 203, 207)",
           },
           {
-            label: "80% <= utility < 90%",
+            label: "80% <= utilization < 90%",
             data: percentsList.map((e) => e[4]),
             backgroundColor: "rgba(255, 159, 64)",
           },
           {
-            label: "90% <= utility < 100%",
+            label: "90% <= utilization < 100%",
             data: percentsList.map((e) => e[5]),
             backgroundColor: "rgba(153, 102, 255)",
           },
@@ -60,7 +60,7 @@
           plugins: {
             title: {
               display: true,
-              text: "Blob Utility of Applications",
+              text: "Blob Utilization of Applications",
             },
           },
           responsive: true,
